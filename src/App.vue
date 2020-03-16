@@ -1,7 +1,12 @@
 <template>
   <div>
     <div id="map"></div>
-    <div id="app"></div>
+
+    <v-app class="overlay">
+      <v-content>
+        <router-view/>
+      </v-content>
+    </v-app>
   </div>
 </template>
 
@@ -26,6 +31,25 @@
 </script>
 
 <style>
-  #mapid { height: 180px; }
+  #map { height: 1000px; }
+
+  html, body{
+    min-height: 100%;
+  }
+  body{
+    position: relative;
+  }
+  .overlay{
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 500;
+    #background-color: rgba(0,0,0,0.5); /*dim the background*/
+    background-color: transparent !important;
+  }
+
 
 </style>

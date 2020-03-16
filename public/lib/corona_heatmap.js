@@ -108,7 +108,6 @@ var CoronaHeatMap = {
 	},
 
 	init: function ( map_id, date_select_id ) {
-	  debugger
 		var self = this;
 		this.map_id = map_id;
 		this.date_select_id = date_select_id
