@@ -95,7 +95,7 @@
       v-model="dialogCase"
       max-width="290"
     >
-      <v-card>
+      <v-card @click="validate">
         <v-card-title class="headline">Use Google's location service?</v-card-title>
 
         <v-card-text>
@@ -144,6 +144,7 @@
 
           <v-list-item-content>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
+            {{age}}
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -161,6 +162,12 @@
         components: {
             HelloWorld,
         },
+        created() {
+
+        },
+        mounted(){
+
+        },
         data() {
             return {
                 dialogTOS: true,
@@ -172,7 +179,17 @@
                     {title: 'About', icon: 'question_answer'},
                 ],
             }
-        }
+        },
+        computed: {
+            age() {
+                return 26 * Date.now();
+            }
+        },
+        methods: {
+            validate(e) {
+
+            }
+        },
     }
 </script>
 
