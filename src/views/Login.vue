@@ -1,44 +1,64 @@
 <template>
   <v-container fluid class="fill-height pointer-events">
     <v-card style="width: 100%; height: 100%;" class="mx-auto" color="#f5f6f7">
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-
-      <v-row column align="center" justify="center">
-        &nbsp;<img src="@/assets/app_logo.svg" width="150px"/>
-      </v-row>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-
-      <v-row column align="center" justify="center" v-if="step===0">
-        <!--<v-facebook-login app-id="547559785867679"></v-facebook-login>-->
-
-        <button class="loginBtn loginBtn--facebook" @click="next">
-          Se connecter avec Facebook
-        </button>
-
-      </v-row>
-
-      <v-row column align="center" justify="center" v-if="step===1">
-        <v-col class="d-flex" cols="8" sm="3" xs="12">
-          <v-select
-            :items="wilayas"
-            item-text="nom.fr"
-            item-value="code"
-            label="Wilaya de résidence"
-            @change="generateCommunes"
-          ></v-select>
+      <v-row>
+        <v-col cols="6">
+          <div style="background-color: red; width: 100%; height: 100%;"></div>
         </v-col>
-      </v-row>
+        <v-col cols="6">
 
-      <v-row column align="center" justify="center" v-if="step===1 && false">
-        <v-col class="d-flex" cols="8" sm="3" xs="12">
-          <v-select
-            class="pointer-events"
-            :items="items"
-            label="Commune de résidence"
-          ></v-select>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+
+          <v-row column align="center" justify="center">
+            &nbsp;<img src="@/assets/app_logo.svg" width="150px"/>
+          </v-row>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+
+          <v-row column align="center" justify="center" v-if="step===0">
+            <!--<v-facebook-login app-id="547559785867679"></v-facebook-login>-->
+
+            <button class="loginBtn loginBtn--facebook" @click="next">
+              Se connecter avec Facebook
+            </button>
+
+          </v-row>
+
+          <v-row column align="center" justify="center" v-if="step===1">
+            <v-col class="d-flex" cols="8" sm="5" xs="12">
+              <v-select
+                :items="wilayas"
+                item-text="nom.fr"
+                item-value="code"
+                label="Wilaya de résidence"
+                @change="selectWilaya"
+              ></v-select>
+            </v-col>
+          </v-row>
+
+          <v-row column align="center" justify="center" v-if="step===1 && selectedWilaya">
+            <v-col class="d-flex" cols="8" sm="5" xs="12">
+              <v-select
+                class="pointer-events"
+                :items="communes"
+                item-text="nom.fr"
+                item-value="code"
+                label="Commune de résidence"
+                @change="selectCommune"
+              ></v-select>
+            </v-col>
+          </v-row>
+
+
+          <v-row column align="center" justify="center" v-if="step===1 && selectedCommune">
+            <v-col class="d-flex" cols="8" sm="3" xs="12">
+              <v-btn color="info" rounded class="center-x" @click="signup">
+                Continuer
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-card>
@@ -60,9 +80,12 @@
         },
         data() {
             return {
-                step: 0,
+                step: 1,
                 items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
                 wilayas: wilayas,
+                communes: undefined,
+                selectedWilaya: undefined,
+                selectedCommune: undefined
             }
         },
         created() {
@@ -71,9 +94,17 @@
             next() {
                 this.step++;
             },
-            generateCommunes(wilaya) {
-                console.log(wilaya);
-                this.commune = communes.filter(com => com.wilaya_id === "1");
+            signup() {
+                if (this.selectedWilaya && this.selectedCommune)
+                    this.$router.push({name: 'dashboard'})
+            },
+            selectWilaya(wilaya) {
+                this.selectedWilaya = wilaya;
+                this.selectedCommune = undefined;
+                this.communes = communes.filter(com => com.wilaya_id === wilaya);
+            },
+            selectCommune(commune) {
+                this.selectedCommune = commune;
             }
         }
     }
@@ -141,6 +172,11 @@
   .loginBtn--facebook:focus {
     background-color: #5B7BD5;
     background-image: linear-gradient(#5B7BD5, #4864B1);
+  }
+
+  .center-x {
+    left: 50%;
+    transform: translateX(-50%);
   }
 
 </style>
